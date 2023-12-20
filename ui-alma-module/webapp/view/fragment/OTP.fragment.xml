@@ -1,0 +1,110 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core"  >
+	
+	<Dialog id="ch.unige.fi.uialmamodule.Dialog"  title="{i18n>OTP}" >
+		
+		<content>
+			<List id="ch.unige.fi.uialmamodule.OTPSelectDialog"
+			 mode="SingleSelectMaster" 
+			 headerText="Header" footerText="" backgroundDesign="Solid" showSeparators="All" 
+			 growing="true" growingThreshold="10" growingScrollToLoad="false" 
+			 items="{ path : 'Z_WBS_ELEMENT_SBIND>/ZI_WBSElementData_2', 
+			 sorter : { path : 'WBSElementExternalID', descending : false } ,
+             parameters: {select: 'WBSElementInternalID, WBSElementExternalID, WBSDescription, ProjectDescription,
+			 Fund, Fund_Desc, PGrant, PGrant_Desc, FCenter, FCenter_Desc'}}"
+			 selectionChange="onOTPSearchOkButtonPress"
+			 itemPress="onOTPOkButtonPress" >
+
+				<headerToolbar>
+					<Toolbar id="ch.unige.fi.uialmamodule.OTPToolbar" width="" design="Solid">
+						<content>
+							<SearchField id="SearchFieldODP" placeholder="{i18n>searchPlaceholderODP}" 
+							showSearchButton="true" visible="true" width="100%" 
+							liveChange="onOTPSearch" search="onOTPSearch"/>
+
+						</content>
+					</Toolbar>
+				</headerToolbar>
+
+				<items>
+					<CustomListItem id="ch.unige.fi.uialmamodule.ListItem" type="Active" >
+						
+						<HBox id="ch.unige.fi.uialmamodule.HBox1">
+						  <VBox id="ch.unige.fi.uialmamodule.VBox1" width="100%" 
+							class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom sapUiNoMarginBottom">
+							
+								<FlexBox id="ch.unige.fi.uialmamodule.FlexBox1" alignItems="Start" 
+								  justifyContent="SpaceBetween" class="sapUiSmallMarginEnd">
+									<items>
+										<Title id="ch.unige.fi.uialmamodule.Title" level="H2" 
+										 text="{Z_WBS_ELEMENT_SBIND>WBSElementExternalID}" textAlign="Left"  />
+		                     			 <Label id="ch.unige.fi.uialmamodule.TitleLabel" 
+										 text=" / " />
+										 <Title id="ch.unige.fi.uialmamodule.ObjectStatus"  level="H2" 
+									      text="   {Z_WBS_ELEMENT_SBIND>WBSDescription}" textAlign="Right" />
+
+									</items>
+								</FlexBox>
+							</VBox>
+
+						</HBox>
+
+						<HBox id="ch.unige.fi.uialmamodule.HBox2" >
+							
+							<VBox id="ch.unige.fi.uialmamodule.VBox2" width="100%" 
+							 class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom sapUiNoMarginTop">
+								<FlexBox id="ch.unige.fi.uialmamodule.FlexBox2" alignItems="Start" 
+								 justifyContent="SpaceBetween" class="sapUiSmallMarginEnd">
+									<items>
+										<Label id="ch.unige.fi.uialmamodule.Label" 
+										 text="Fond {Z_WBS_ELEMENT_SBIND>Fund} - {Z_WBS_ELEMENT_SBIND>Fund_Desc}" />
+									</items>
+								</FlexBox>
+							</VBox>
+
+						</HBox>
+						 <HBox id="ch.unige.fi.uialmamodule.HBox3" >
+							
+							<VBox id="ch.unige.fi.uialmamodule.VBox3" width="100%" 
+							 class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom sapUiNoMarginTop">
+								<FlexBox id="ch.unige.fi.uialmamodule.FlexBox3" alignItems="Start" 
+								 justifyContent="SpaceBetween" class="sapUiSmallMarginEnd">
+									<items>
+										<Label id="ch.unige.fi.uialmamodule.Label3" 
+										 text="Subvention {Z_WBS_ELEMENT_SBIND>PGrant} - {Z_WBS_ELEMENT_SBIND>PGrant_Desc}" />
+									</items>   
+								</FlexBox>
+							</VBox>
+
+						</HBox>
+
+						 <HBox id="ch.unige.fi.uialmamodule.HBox4" >
+							
+							<VBox id="ch.unige.fi.uialmamodule.VBox4" width="100%" 
+							 class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom sapUiNoMarginTop">
+								<FlexBox id="ch.unige.fi.uialmamodule.FlexBox4" alignItems="Start" 
+								 justifyContent="SpaceBetween" class="sapUiSmallMarginEnd">
+									<items>
+										<Label id="ch.unige.fi.uialmamodule.Label4" 
+										 text="Centre {Z_WBS_ELEMENT_SBIND>FCenter} - {Z_WBS_ELEMENT_SBIND>FCenter_Desc}" />
+									</items>   
+								</FlexBox>
+							</VBox>
+
+						</HBox>
+ 
+ 
+					</CustomListItem>
+				</items>
+			</List>
+		</content>
+		<beginButton/>
+
+		<buttons>
+			<Button id="OKButton1"  text="{i18n>okButton}"       width="auto" enabled="true" visible="true" iconDensityAware="false" press="onOTPOkButtonPress"/>
+			<Button id="KOnButton2" text="{i18n>cancelButton}"   width="auto" enabled="true" visible="true" iconDensityAware="false" press="onOTPCancelButtonPress"/>
+		</buttons>
+		<customHeader/>
+		<endButton/>
+		<subHeader/>
+	</Dialog>
+</core:FragmentDefinition>
