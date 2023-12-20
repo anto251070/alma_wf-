@@ -1,0 +1,108 @@
+_schema-version: "3.2"
+ID: alma_wf
+version: 0.0.1
+modules:
+- name: workflow-alma-module
+  type: com.sap.application.content
+  path: workflow-alma-module
+  requires:
+  - name: workflow
+    parameters:
+      content-target: true
+      service-key:
+        config:
+          deployUsageScenario: workflow
+        name: spa-workflow-service-key
+- name: alma_wf-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: alma_wf-destination-service
+    parameters:
+      content-target: true
+  - name: alma_wf_html_repo_host
+    parameters:
+      service-key:
+        name: alma_wf_html_repo_host-key
+  - name: uaa_alma_wf
+    parameters:
+      service-key:
+        name: uaa_alma_wf-key
+  parameters:
+    content:
+      subaccount:
+        destinations:
+        - Name: alma_mng_approuter_alma_wf_html_repo_host
+          ServiceInstanceName: alma_wf-html5-app-host-service
+          ServiceKeyName: alma_wf_html_repo_host-key
+          sap.cloud.service: alma_mng_approuter
+        - Authentication: OAuth2UserTokenExchange
+          Name: alma_mng_approuter_uaa_alma_wf
+          ServiceInstanceName: alma_wf-xsuaa-service
+          ServiceKeyName: uaa_alma_wf-key
+          sap.cloud.service: alma_mng_approuter
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: alma_wf-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: alma_wf_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - chunigefiuialmamodule.zip
+      name: chunigefiuialmamodule
+      target-path: resources/
+- name: chunigefiuialmamodule
+  type: html5
+  path: ui-alma-module
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: workflow
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: workflow
+    service-plan: standard
+- name: alma_wf-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        subaccount:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: alma_wf-destination-service
+    service-plan: lite
+- name: alma_wf_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: alma_wf-html5-app-host-service
+    service-plan: app-host
+- name: uaa_alma_wf
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: alma_wf-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
